@@ -12,7 +12,7 @@ class LRUCache:
         self.limit = limit
         self.cur_num = 0
         self.dll = DoublyLinkedList()
-        self.storage = {}
+        self.storage = dict()
 
     """
     Retrieves the value associated with the given key. Also
@@ -23,8 +23,11 @@ class LRUCache:
     """
     def get(self, key):
         if key in self.storage:
-            self.dll.move_to_end(self.storage[key])
-            return self.storage[key]
+            # self.dll.move_to_end(self.storage[key])
+            # return self.storage[key]
+            node = self.storage[key]
+            self.dll.move_to_end(node)
+            return node.value[1]
         else:
             return None
             
@@ -42,32 +45,83 @@ class LRUCache:
         
         # node = {} # not sure what to do here
         # if the cache is already at max capacity
-        if self.cur_num == self.limit and key not in self.storage:
-            # oldest entry in the cache needs to be removed to make room
+        # if self.cur_num == self.limit and key not in self.storage:
+        #     # oldest entry in the cache needs to be removed to make room
+        #     self.dll.remove_from_head()
+        #     # del self.storage[self.order.head.value[0]]
+        #     # add new entry to tail
+        #     node = (key, value) # ?
+        #     # node = (key, value) # ?
+        #     self.dll.add_to_tail((key, value))
+        #     self.storage[key] = value
+        # # in the case that the key already exists in the cache
+        # elif key in self.storage:
+        #     # overwrite the old value
+        #     self.storage[key] = value
+
+        # # Adds the given key-value pair to the cache
+        # else:
+        #     # add new entry to tail
+        #     # node = (key, value)
+        #     # node = (key, value) # ?
+        #     self.dll.add_to_tail((key, value))
+        #     self.storage[key] = value
+        #     # increment cur_num
+        #     self.cur_num += 1
+
+        #####################################
+        print("---------")
+        print(f"self.dll.head before: {self.dll.head}")
+        print(f"self.cur_num before: {self.cur_num}")
+
+        # key exist in storage?
+        if key in self.storage:
+        # yes:
+            # overwrite
+            node = self.storage[key]
+            node.value = (key, value)
+            self.dll.move_to_end(node)
+            return
+            # are we at max limit?
+        if self.cur_num == self.limit:
+            # yes
+            del self.storage[self.dll.head.value[0]]
             self.dll.remove_from_head()
-            # del self.storage[self.order.head.value[0]]
-            # add new entry to tail
-            node = (key, value) # ?
-            # node = (key, value) # ?
-            self.dll.add_to_tail((key, value))
-            self.storage[key] = value
-        # in the case that the key already exists in the cache
-        elif key in self.storage:
-            # overwrite the old value
-            self.storage[key] = value
+            self.cur_num -= 1
+        # how do we put stuff in cache?
+        # if cache not full nad key not present
+        self.dll.add_to_tail((key, value))
+        self.storage[key] = self.dll.tail
+        self.cur_num += 1
 
-        # Adds the given key-value pair to the cache
-        else:
-            # add new entry to tail
-            # node = (key, value)
-            # node = (key, value) # ?
-            self.dll.add_to_tail((key, value))
-            self.storage[key] = value
-            # increment cur_num
-            self.cur_num += 1
+        print(f"self.cur_num after: {self.cur_num}")
+        print(f"self.dll.head after: {self.dll.head}")
+        print("---------")
 
-# test = LRUCache()
-# print(test.set('item1', 'a'))
-# print(test.set('item2', 'b'))
-# print(test.set('item3', 'c'))
-# print(test.set('item2', 'z'))
+
+
+        
+
+
+
+
+
+
+test = LRUCache(3)
+print(f"test.set('item1', 'a'): {test.set('item1', 'a')}")
+print(f"test.set('item2', 'b'): {test.set('item2', 'b')}")
+print(f"test.set('item3', 'c'): {test.set('item3', 'c')}")
+# print(f"test.set('item2', 'z'): {test.set('item2', 'z')}")
+print(f"test.get('item1'): {test.get('item1')}")
+print(f"test.dll.head before in test: {test.dll.head}")
+print(f"test.set('item4', 'd'): {test.set('item4', 'd')}")
+print(f"test.dll.head after in test: {test.dll.head}")
+
+print(f"test.get('item1'): {test.get('item1')}")
+# print(f"test.get('item2'): {test.get('item2')}")
+print(f"test.get('item3'): {test.get('item3')}")
+print(f"test.get('item4'): {test.get('item4')}")
+print(f"test.get('item2'): {test.get('item2')}")
+
+
+# print(test.get('item3'))
