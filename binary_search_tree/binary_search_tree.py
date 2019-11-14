@@ -1,7 +1,7 @@
-import sys
-sys.path.append('../queue_and_stack')
-from dll_queue import Queue
-from dll_stack import Stack
+# import sys
+# sys.path.append('../queue_and_stack')
+# from dll_queue import Queue
+# from dll_stack import Stack
 
 
 class BinarySearchTree:
@@ -12,9 +12,17 @@ class BinarySearchTree:
 
     # Insert the given value into the tree
     def insert(self, value):
-        # < go left
-        # >= go right
-        pass
+        # if self.left and self.right != None:
+        if value >= self.value:
+            if self.right:
+                self.right.insert(value)
+            else:
+                self.right = BinarySearchTree(value)
+        else:
+            if self.left:
+                self.left.insert(value)
+            else:
+                self.left = BinarySearchTree(value)        
 
     # Return True if the tree contains the value
     # False if it does not
@@ -22,20 +30,58 @@ class BinarySearchTree:
         # to search a give key in Binary Search Tree, we first compare it with root
         # if the key is present at root, we return root. if key is greater than root's key,
         # we recur for right subtree of root node. Otherwise we recur for left subtree.
-        pass
+        print(f"self.value: {self.value}")
+        print(f"target: {target}")
+        if target == self.value:
+            return True
+        elif target > self.value:
+            if self.right:
+                return self.right.contains(target)
+            else:
+                return False
+        else:
+            if self.left:
+                return self.left.contains(target)
+            else:
+                return False
+
+            
+
 
     # Return the maximum value found in the tree
     def get_max(self):
         # go right until you can go right no further, then you shall find what you seek
-        pass
+        while self.right:
+            self = self.right
+        return self.value
 
     # Call the function `cb` on the value of each node
     # You may use a recursive or iterative approach
     def for_each(self, cb):
         # go left until you can't anymore
-        # go back and go right
+        # go back and go right somehow
         # in here somewhere, you want to call cb(node)
-        pass
+        # if we have a left and no right
+           # recursively call left
+        # if we have a right and no left
+           # recursively call right
+        # if we have both
+        #     call for both
+        # if neither, we only have one node
+        #     call on self
+        cb(self.value)
+        if self.left and self.right:
+            self.left.for_each(cb)
+            self.right.for_each(cb)
+        elif self.left:
+            self.left.for_each(cb)
+        elif self.right:
+            self.right.for_each(cb)
+
+
+
+
+        
 
     # DAY 2 Project -----------------------
 
@@ -64,3 +110,15 @@ class BinarySearchTree:
     # Print Post-order recursive DFT
     def post_order_dft(self, node):
         pass
+
+
+test = BinarySearchTree(5)
+
+# contains #
+print(f"{test.insert(2)} inserted 2")
+print(f"{test.insert(3)} inserted 3")
+print(f"{test.insert(7)} inserted 7")
+# print(f"test.value: {test.value}")
+print(f"test.contains(7): {test.contains(7)} == true? ")
+print(f"test.contains(8): {test.contains(8)} == false? ")
+

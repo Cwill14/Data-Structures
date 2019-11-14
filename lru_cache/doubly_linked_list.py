@@ -34,8 +34,8 @@ class ListNode:
         if self.next:
             self.next.prev = self.prev
 
-    def __repr__(self):
-        return f"value = {self.value}"
+    # def __repr__(self):
+    #     return f"value = {self.value}"
 
 
 """Our doubly-linked list class. It holds references to
