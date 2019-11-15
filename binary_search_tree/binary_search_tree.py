@@ -45,15 +45,14 @@ class BinarySearchTree:
             else:
                 return False
 
-            
-
-
     # Return the maximum value found in the tree
     def get_max(self):
         # go right until you can go right no further, then you shall find what you seek
         while self.right:
             self = self.right
         return self.value
+
+        # return self.right.get_max() if self.right else self.value
 
     # Call the function `cb` on the value of each node
     # You may use a recursive or iterative approach
@@ -70,34 +69,46 @@ class BinarySearchTree:
         # if neither, we only have one node
         #     call on self
         cb(self.value)
-        if self.left and self.right:
+        if self.left:
             self.left.for_each(cb)
+        if self.right:
             self.right.for_each(cb)
-        elif self.left:
-            self.left.for_each(cb)
-        elif self.right:
-            self.right.for_each(cb)
-
-
-
-
-        
 
     # DAY 2 Project -----------------------
 
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
+
     def in_order_print(self, node):
-        pass
+        if node is None:
+            return
+        self.in_order_print(node.left)
+        print(node.value)
+        self.in_order_print(node.right)
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
     def bft_print(self, node):
+        # make queue
+        # push root into queue
+        # while queue not empty
+        #     if left
+        #         add left to back
+        #     if right
+        #         add right to back
         pass
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
     def dft_print(self, node):
+        # make Stack
+        # put the root in the Stack
+        # while stack is not empty
+        #     pop the top item in the stack
+        #     look right
+        #     push right to stack
+        #     look left
+        #     if there is a left, push to stack
         pass
 
     # STRETCH Goals -------------------------
@@ -112,13 +123,13 @@ class BinarySearchTree:
         pass
 
 
-test = BinarySearchTree(5)
+# test = BinarySearchTree(5)
 
-# contains #
-print(f"{test.insert(2)} inserted 2")
-print(f"{test.insert(3)} inserted 3")
-print(f"{test.insert(7)} inserted 7")
-# print(f"test.value: {test.value}")
-print(f"test.contains(7): {test.contains(7)} == true? ")
-print(f"test.contains(8): {test.contains(8)} == false? ")
+# # contains #
+# print(f"{test.insert(2)} inserted 2")
+# print(f"{test.insert(3)} inserted 3")
+# print(f"{test.insert(7)} inserted 7")
+# # print(f"test.value: {test.value}")
+# print(f"test.contains(7): {test.contains(7)} == true? ")
+# print(f"test.contains(8): {test.contains(8)} == false? ")
 
